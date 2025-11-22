@@ -2,6 +2,14 @@
 
 This document provides an overview of all available agents in the AgenTerra project.
 
+## Project Guidelines
+- The project should use the **Microsoft Agent Framework** to work with AI capabilities.
+- Each feature implementation must include:
+  - **Tests** to verify correctness and reliability.
+  - **Samples** to demonstrate usage and provide examples.
+- Create a **feature branch** for each new feature before starting implementation.
+
+
 ## Available Agents
 
 ### C# Expert Agent

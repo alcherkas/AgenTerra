@@ -979,9 +979,8 @@ async def slack_webhook(request: Request):
 3. **Session Summaries**: Automatic conversation summarization
 4. **User Memories**: Persistent user-specific memory across sessions
 5. **Agentic Memory**: AI-managed memory with automatic organization
-6. **Telemetry**: Built-in observability and metrics
-7. **Evaluation Framework**: Built-in testing and evaluation tools
-8. **Knowledge Readers**: 10+ content readers (PDF, DOCX, PPTX, CSV, etc.)
+6. **Evaluation Framework**: Built-in testing and evaluation tools
+7. **Knowledge Readers**: 10+ content readers (PDF, DOCX, PPTX, CSV, etc.)
 
 ### Agent Framework Unique Features
 
@@ -991,6 +990,12 @@ async def slack_webhook(request: Request):
 4. **Streaming Aggregators**: Sophisticated streaming result aggregation
 5. **Group Chat Primitives**: Reusable group chat orchestration
 6. **Declarative Workflows**: YAML-based workflow definitions (Azure AI)
+7. **OpenTelemetry Integration**: Comprehensive built-in observability with tracing, logging, and metrics
+   - Python: `setup_observability()` function with OTLP and Azure Monitor exporters
+   - C#: `OpenTelemetryAgent` wrapper with semantic conventions for GenAI
+   - Support for Aspire Dashboard, Application Insights, custom exporters
+   - Environment variable configuration
+   - No additional dependencies required
 
 ### Resources
 
