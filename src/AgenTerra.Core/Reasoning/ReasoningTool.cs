@@ -170,5 +170,6 @@ public class ReasoningTool : IReasoningTool, IDisposable
             _lock.Dispose();
             _disposed = true;
         }
+        GC.SuppressFinalize(this);
     }
 }
