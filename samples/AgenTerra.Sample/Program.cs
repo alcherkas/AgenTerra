@@ -1,63 +1,42 @@
-﻿using AgenTerra.Core.Knowledge;
-using AgenTerra.Core.Knowledge.Models;
+﻿using AgenTerra.Sample;
 
-Console.WriteLine("=== Knowledge Readers Sample ===\n");
+Console.WriteLine("=== AgenTerra Sample Demonstrations ===");
+Console.WriteLine();
+Console.WriteLine("Select a sample to run:");
+Console.WriteLine("1. Reasoning Tools - Fox, Chicken, and Grain Puzzle");
+Console.WriteLine("2. Workflow Session State - Shopping Cart");
+Console.WriteLine("3. Knowledge Readers - Document Text Extraction");
+Console.WriteLine();
+Console.Write("Enter your choice (1, 2, or 3): ");
 
-var factory = new DocumentReaderFactory();
+var choice = Console.ReadLine();
 
-// Display supported formats
-Console.WriteLine("Supported formats:");
-foreach (var ext in factory.GetSupportedExtensions())
-{
-    Console.WriteLine($"  - {ext}");
-}
+Console.WriteLine();
+Console.WriteLine(new string('=', 60));
 Console.WriteLine();
 
-// Sample 1: Read text file
-await ReadDocumentSample("sample.txt", factory);
-
-// Sample 2: Read markdown file
-await ReadDocumentSample("sample.md", factory);
-
-// Sample 3: Read PDF file (if exists)
-if (File.Exists("sample.pdf"))
+switch (choice)
 {
-    await ReadDocumentSample("sample.pdf", factory);
-}
-else
-{
-    Console.WriteLine("\n--- sample.pdf not found ---");
-    Console.WriteLine("Note: PDF sample file is optional for testing");
-}
-
-// Sample 4: Check unsupported format
-Console.WriteLine("\n--- Testing unsupported format ---");
-if (!factory.IsSupported("document.docx"))
-{
-    Console.WriteLine("✗ .docx format not yet supported");
-}
-
-Console.WriteLine("\n=== Sample completed successfully ===");
-
-static async Task ReadDocumentSample(string filePath, DocumentReaderFactory factory)
-{
-    Console.WriteLine($"\n--- Reading: {filePath} ---");
-    
-    try
-    {
-        var content = await factory.ReadDocumentAsync(filePath);
-        
-        Console.WriteLine($"Source: {content.Source}");
-        Console.WriteLine($"Size: {content.FileSizeBytes} bytes");
-        if (content.PageCount.HasValue)
-        {
-            Console.WriteLine($"Pages: {content.PageCount}");
-        }
-        Console.WriteLine($"Text preview: {content.Text[..Math.Min(200, content.Text.Length)]}...");
-        Console.WriteLine($"Metadata: {string.Join(", ", content.Metadata.Keys)}");
-    }
-    catch (DocumentReadException ex)
-    {
-        Console.WriteLine($"✗ Error: {ex.Message}");
-    }
+    case "1":
+        await ReasoningToolSample.RunAsync();
+        break;
+    case "2":
+        await WorkflowSessionStateSample.RunAsync();
+        break;
+    case "3":
+        await KnowledgeReadersSample.RunAsync();
+        break;
+    default:
+        Console.WriteLine("Invalid choice. Running all samples...");
+        Console.WriteLine();
+        await ReasoningToolSample.RunAsync();
+        Console.WriteLine();
+        Console.WriteLine(new string('=', 60));
+        Console.WriteLine();
+        await WorkflowSessionStateSample.RunAsync();
+        Console.WriteLine();
+        Console.WriteLine(new string('=', 60));
+        Console.WriteLine();
+        await KnowledgeReadersSample.RunAsync();
+        break;
 }
