@@ -8,7 +8,7 @@ public class ThreadSafetyTests
     public async Task ConcurrentThinkCalls_ToSameSession_AreThreadSafe()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId = "concurrent-think-test";
         var taskCount = 100;
         var tasks = new List<Task>();
@@ -35,7 +35,7 @@ public class ThreadSafetyTests
     public async Task ConcurrentAnalyzeCalls_ToSameSession_AreThreadSafe()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId = "concurrent-analyze-test";
         var taskCount = 100;
         var tasks = new List<Task>();
@@ -62,7 +62,7 @@ public class ThreadSafetyTests
     public async Task ConcurrentMixedCalls_ToSameSession_AreThreadSafe()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId = "concurrent-mixed-test";
         var taskCount = 100;
         var tasks = new List<Task>();
@@ -99,7 +99,7 @@ public class ThreadSafetyTests
     public async Task ConcurrentCallsToMultipleSessions_AreThreadSafe()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionCount = 50;
         var stepsPerSession = 20;
         var tasks = new List<Task>();
@@ -132,7 +132,7 @@ public class ThreadSafetyTests
     public async Task ConcurrentReads_WhileWriting_AreThreadSafe()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId = "read-write-test";
         var writeCount = 100;
         var readCount = 100;
@@ -166,7 +166,7 @@ public class ThreadSafetyTests
     public async Task ParallelSessionCreation_IsThreadSafe()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionCount = 100;
 
         // Act
@@ -189,7 +189,7 @@ public class ThreadSafetyTests
     public async Task StressTest_ManyOperationsSimultaneously()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionCount = 10;
         var operationsPerSession = 50;
         var random = new Random(42); // Fixed seed for reproducibility

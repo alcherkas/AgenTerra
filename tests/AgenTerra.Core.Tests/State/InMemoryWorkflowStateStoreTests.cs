@@ -9,7 +9,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task GetSessionAsync_ReturnsNull_ForNonExistentSession()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
         var sessionId = "non-existent-session";
 
         // Act
@@ -23,7 +23,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task GetSessionAsync_ThrowsArgumentNullException_WhenSessionIdIsNull()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
 
         // Act & Assert
         await Assert.ThrowsAsync<ArgumentNullException>(() => store.GetSessionAsync(null!));
@@ -33,7 +33,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task SaveSessionAsync_CreatesNewSession()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
         var session = new WorkflowSession
         {
             SessionId = "test-session",
@@ -53,7 +53,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task SaveSessionAsync_ThrowsArgumentNullException_WhenSessionIsNull()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
 
         // Act & Assert
         await Assert.ThrowsAsync<ArgumentNullException>(() => store.SaveSessionAsync(null!));
@@ -63,7 +63,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task SaveSessionAsync_UpdatesExistingSessionTimestamp()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
         var session = new WorkflowSession
         {
             SessionId = "test-session",
@@ -88,7 +88,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task GetStateAsync_ReturnsCorrectTypedValue()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
         var sessionId = "test-session";
         var expectedValue = "test-value";
 
@@ -104,7 +104,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task GetStateAsync_ReturnsDefault_ForMissingKey()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
         var sessionId = "test-session";
 
         // Act
@@ -119,7 +119,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task GetStateAsync_ReturnsDefault_ForNonExistentSession()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
 
         // Act
         var result = await store.GetStateAsync<string>("non-existent", "key1");
@@ -132,7 +132,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task GetStateAsync_ThrowsArgumentNullException_WhenSessionIdIsNull()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
 
         // Act & Assert
         await Assert.ThrowsAsync<ArgumentNullException>(() => store.GetStateAsync<string>(null!, "key"));
@@ -142,7 +142,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task GetStateAsync_ThrowsArgumentNullException_WhenKeyIsNull()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
 
         // Act & Assert
         await Assert.ThrowsAsync<ArgumentNullException>(() => store.GetStateAsync<string>("session", null!));
@@ -152,7 +152,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task SetStateAsync_CreatesSession_IfNotExists()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
         var sessionId = "new-session";
 
         // Act
@@ -168,7 +168,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task SetStateAsync_ThrowsArgumentNullException_WhenSessionIdIsNull()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
 
         // Act & Assert
         await Assert.ThrowsAsync<ArgumentNullException>(() => store.SetStateAsync<string>(null!, "key", "value"));
@@ -178,7 +178,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task SetStateAsync_ThrowsArgumentNullException_WhenKeyIsNull()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
 
         // Act & Assert
         await Assert.ThrowsAsync<ArgumentNullException>(() => store.SetStateAsync<string>("session", null!, "value"));
@@ -188,7 +188,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task SetStateAsync_UpdatesStateCorrectly()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
         var sessionId = "test-session";
 
         // Act
@@ -206,7 +206,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task SetStateAsync_PreservesImmutability()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
         var sessionId = "test-session";
 
         // Act
@@ -226,7 +226,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task DeleteSessionAsync_RemovesSession()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
         var sessionId = "test-session";
         await store.SetStateAsync(sessionId, "key1", "value1");
 
@@ -243,7 +243,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task DeleteSessionAsync_ReturnsFalse_ForNonExistentSession()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
 
         // Act
         var result = await store.DeleteSessionAsync("non-existent");
@@ -256,7 +256,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task DeleteSessionAsync_ThrowsArgumentNullException_WhenSessionIdIsNull()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
 
         // Act & Assert
         await Assert.ThrowsAsync<ArgumentNullException>(() => store.DeleteSessionAsync(null!));
@@ -266,7 +266,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task GetAllSessionIdsAsync_ReturnsAllSessions()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
         await store.SetStateAsync("session1", "key", "value");
         await store.SetStateAsync("session2", "key", "value");
         await store.SetStateAsync("session3", "key", "value");
@@ -285,7 +285,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task GetAllSessionIdsAsync_ReturnsEmpty_WhenNoSessions()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
 
         // Act
         var sessionIds = await store.GetAllSessionIdsAsync();
@@ -298,7 +298,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task ConcurrentOperations_AreThreadSafe()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
         var sessionId = "concurrent-session";
         var tasks = new List<Task>();
 
@@ -324,7 +324,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task SetStateAsync_SupportsComplexTypes()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
         var sessionId = "test-session";
         var complexObject = new List<string> { "item1", "item2", "item3" };
 
@@ -342,7 +342,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task GetSessionAsync_ReturnsCopy_NotReference()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
         var sessionId = "test-session";
         await store.SetStateAsync(sessionId, "key1", "value1");
 
@@ -359,7 +359,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task GetSessionAsync_WithCancellationToken_SupportsCancellation()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
@@ -372,7 +372,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task SaveSessionAsync_WithCancellationToken_SupportsCancellation()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
         var session = new WorkflowSession
         {
             SessionId = "test-session",
@@ -390,7 +390,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task GetStateAsync_WithCancellationToken_SupportsCancellation()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
@@ -403,7 +403,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task SetStateAsync_WithCancellationToken_SupportsCancellation()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
@@ -416,7 +416,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task DeleteSessionAsync_WithCancellationToken_SupportsCancellation()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
@@ -429,7 +429,7 @@ public class InMemoryWorkflowStateStoreTests
     public async Task GetAllSessionIdsAsync_WithCancellationToken_SupportsCancellation()
     {
         // Arrange
-        var store = new InMemoryWorkflowStateStore();
+        using var store = new InMemoryWorkflowStateStore();
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 

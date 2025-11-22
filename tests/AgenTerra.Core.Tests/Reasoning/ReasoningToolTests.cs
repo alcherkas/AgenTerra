@@ -8,7 +8,7 @@ public class ReasoningToolTests
     public async Task ThinkAsync_WithValidInput_ReturnsFormattedResponse()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var input = new ThinkInput("test-session", "Test Thought", "This is a test thought", "Test action", 0.9
         );
 
@@ -27,7 +27,7 @@ public class ReasoningToolTests
     public async Task ThinkAsync_WithNullInput_ThrowsArgumentNullException()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
 
         // Act & Assert
         await Assert.ThrowsAsync<ArgumentNullException>(() => tool.ThinkAsync(null!));
@@ -37,7 +37,7 @@ public class ReasoningToolTests
     public async Task ThinkAsync_WithNullSessionId_ThrowsArgumentException()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var input = new ThinkInput(null!, "Test", "Test"
         );
 
@@ -49,7 +49,7 @@ public class ReasoningToolTests
     public async Task ThinkAsync_WithEmptyTitle_ThrowsArgumentException()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var input = new ThinkInput("test-session", "", "Test"
         );
 
@@ -61,7 +61,7 @@ public class ReasoningToolTests
     public async Task ThinkAsync_WithEmptyThought_ThrowsArgumentException()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var input = new ThinkInput("test-session", "Test", ""
         );
 
@@ -73,7 +73,7 @@ public class ReasoningToolTests
     public async Task ThinkAsync_WithoutAction_ReturnsResponseWithoutAction()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var input = new ThinkInput("test-session", "Test Thought", "This is a test thought"
         );
 
@@ -90,7 +90,7 @@ public class ReasoningToolTests
     public async Task AnalyzeAsync_WithValidInput_ReturnsFormattedResponse()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var input = new AnalyzeInput("test-session", "Test Analysis", "Test result", "Test analysis", NextAction.Validate, 0.85
         );
 
@@ -110,7 +110,7 @@ public class ReasoningToolTests
     public async Task AnalyzeAsync_WithNullInput_ThrowsArgumentNullException()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
 
         // Act & Assert
         await Assert.ThrowsAsync<ArgumentNullException>(() => tool.AnalyzeAsync(null!));
@@ -120,7 +120,7 @@ public class ReasoningToolTests
     public async Task AnalyzeAsync_WithNullSessionId_ThrowsArgumentException()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var input = new AnalyzeInput(null!, "Test", "Test", "Test"
         );
 
@@ -132,7 +132,7 @@ public class ReasoningToolTests
     public async Task AnalyzeAsync_WithEmptyResult_ThrowsArgumentException()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var input = new AnalyzeInput("test-session", "Test", "", "Test"
         );
 
@@ -144,7 +144,7 @@ public class ReasoningToolTests
     public async Task AnalyzeAsync_WithDefaultNextAction_UsesContinue()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var input = new AnalyzeInput("test-session", "Test Analysis", "Test result", "Test analysis"
         );
 
@@ -159,7 +159,7 @@ public class ReasoningToolTests
     public void GetReasoningHistory_WithNullSessionId_ThrowsArgumentException()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
 
         // Act & Assert
         Assert.Throws<ArgumentException>(() => tool.GetReasoningHistory(null!));
@@ -169,7 +169,7 @@ public class ReasoningToolTests
     public void GetReasoningHistory_WithNonExistentSession_ReturnsEmptyList()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
 
         // Act
         var history = tool.GetReasoningHistory("non-existent-session");
@@ -183,7 +183,7 @@ public class ReasoningToolTests
     public async Task GetReasoningHistory_AfterAddingSteps_ReturnsAllStepsInOrder()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId = "test-session";
 
         await tool.ThinkAsync(new ThinkInput(sessionId, "First", "First thought"));
@@ -207,7 +207,7 @@ public class ReasoningToolTests
     public async Task GetReasoningHistory_ReturnsSnapshotOfCurrentState()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId = "test-session";
 
         await tool.ThinkAsync(new ThinkInput(sessionId, "First", "First thought"));
@@ -231,7 +231,7 @@ public class ReasoningToolTests
     public async Task ReasoningSteps_ContainCorrectTimestamps()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId = "test-session";
         var beforeTime = DateTime.UtcNow;
 
@@ -251,7 +251,7 @@ public class ReasoningToolTests
     public async Task ReasoningSteps_StoreCorrectConfidence()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId = "test-session";
 
         // Act
@@ -269,7 +269,7 @@ public class ReasoningToolTests
     public async Task ThinkAsync_WithCancellationToken_SupportsCancellation()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var input = new ThinkInput("test-session", "Test Thought", "This is a test thought"
         );
         using var cts = new CancellationTokenSource();
@@ -284,7 +284,7 @@ public class ReasoningToolTests
     public async Task AnalyzeAsync_WithCancellationToken_SupportsCancellation()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var input = new AnalyzeInput("test-session", "Test Analysis", "Test result", "Test analysis"
         );
         using var cts = new CancellationTokenSource();

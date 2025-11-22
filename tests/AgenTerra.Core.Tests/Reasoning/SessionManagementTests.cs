@@ -8,7 +8,7 @@ public class SessionManagementTests
     public async Task DifferentSessions_AreIsolatedFromEachOther()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId1 = "session-1";
         var sessionId2 = "session-2";
 
@@ -31,7 +31,7 @@ public class SessionManagementTests
     public async Task MultipleSessions_CanBeCreatedConcurrently()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionCount = 10;
         var tasks = new List<Task>();
 
@@ -59,7 +59,7 @@ public class SessionManagementTests
     public async Task SameSession_AccumulatesStepsOverTime()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId = "accumulation-test";
 
         // Act & Assert
@@ -80,7 +80,7 @@ public class SessionManagementTests
     public async Task NewSession_IsCreatedAutomaticallyOnFirstUse()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId = "auto-created-session";
 
         // Act
@@ -97,7 +97,7 @@ public class SessionManagementTests
     public async Task SessionHistory_PreservesInsertionOrder()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId = "order-test";
         var expectedTitles = new List<string>();
 
@@ -131,7 +131,7 @@ public class SessionManagementTests
     public async Task MixedStepTypes_AreCorrectlyStoredInSession()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId = "mixed-types-test";
 
         // Act
