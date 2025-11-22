@@ -1,0 +1,10 @@
+This is a sample text file for testing the Knowledge Readers feature.
+
+The TextDocumentReader can read plain text files with the .txt extension.
+
+Features:
+- Simple text extraction
+- File metadata collection
+- Support for UTF-8 encoding
+
+This sample demonstrates basic document reading capabilities.
