@@ -15,6 +15,8 @@ public class InMemoryWorkflowStateStore : IWorkflowStateStore
     /// <inheritdoc/>
     public async Task<WorkflowSession?> GetSessionAsync(string sessionId)
     {
+        ArgumentNullException.ThrowIfNull(sessionId);
+
         await _lock.WaitAsync();
         try
         {
@@ -31,6 +33,8 @@ public class InMemoryWorkflowStateStore : IWorkflowStateStore
     /// <inheritdoc/>
     public async Task SaveSessionAsync(WorkflowSession session)
     {
+        ArgumentNullException.ThrowIfNull(session);
+
         await _lock.WaitAsync();
         try
         {
@@ -46,6 +50,9 @@ public class InMemoryWorkflowStateStore : IWorkflowStateStore
     /// <inheritdoc/>
     public async Task<T?> GetStateAsync<T>(string sessionId, string key)
     {
+        ArgumentNullException.ThrowIfNull(sessionId);
+        ArgumentNullException.ThrowIfNull(key);
+
         var session = await GetSessionAsync(sessionId);
         if (session?.SessionState.TryGetValue(key, out var value) == true)
         {
@@ -57,6 +64,9 @@ public class InMemoryWorkflowStateStore : IWorkflowStateStore
     /// <inheritdoc/>
     public async Task SetStateAsync<T>(string sessionId, string key, T value)
     {
+        ArgumentNullException.ThrowIfNull(sessionId);
+        ArgumentNullException.ThrowIfNull(key);
+
         await _lock.WaitAsync();
         try
         {
@@ -91,6 +101,8 @@ public class InMemoryWorkflowStateStore : IWorkflowStateStore
     /// <inheritdoc/>
     public async Task<bool> DeleteSessionAsync(string sessionId)
     {
+        ArgumentNullException.ThrowIfNull(sessionId);
+
         await _lock.WaitAsync();
         try
         {

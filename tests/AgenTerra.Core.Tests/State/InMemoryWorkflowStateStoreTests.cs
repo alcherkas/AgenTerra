@@ -20,6 +20,16 @@ public class InMemoryWorkflowStateStoreTests
     }
 
     [Fact]
+    public async Task GetSessionAsync_ThrowsArgumentNullException_WhenSessionIdIsNull()
+    {
+        // Arrange
+        var store = new InMemoryWorkflowStateStore();
+
+        // Act & Assert
+        await Assert.ThrowsAsync<ArgumentNullException>(() => store.GetSessionAsync(null!));
+    }
+
+    [Fact]
     public async Task SaveSessionAsync_CreatesNewSession()
     {
         // Arrange
@@ -37,6 +47,16 @@ public class InMemoryWorkflowStateStoreTests
         // Assert
         Assert.NotNull(result);
         Assert.Equal("test-session", result.SessionId);
+    }
+
+    [Fact]
+    public async Task SaveSessionAsync_ThrowsArgumentNullException_WhenSessionIsNull()
+    {
+        // Arrange
+        var store = new InMemoryWorkflowStateStore();
+
+        // Act & Assert
+        await Assert.ThrowsAsync<ArgumentNullException>(() => store.SaveSessionAsync(null!));
     }
 
     [Fact]
@@ -109,6 +129,26 @@ public class InMemoryWorkflowStateStoreTests
     }
 
     [Fact]
+    public async Task GetStateAsync_ThrowsArgumentNullException_WhenSessionIdIsNull()
+    {
+        // Arrange
+        var store = new InMemoryWorkflowStateStore();
+
+        // Act & Assert
+        await Assert.ThrowsAsync<ArgumentNullException>(() => store.GetStateAsync<string>(null!, "key"));
+    }
+
+    [Fact]
+    public async Task GetStateAsync_ThrowsArgumentNullException_WhenKeyIsNull()
+    {
+        // Arrange
+        var store = new InMemoryWorkflowStateStore();
+
+        // Act & Assert
+        await Assert.ThrowsAsync<ArgumentNullException>(() => store.GetStateAsync<string>("session", null!));
+    }
+
+    [Fact]
     public async Task SetStateAsync_CreatesSession_IfNotExists()
     {
         // Arrange
@@ -122,6 +162,26 @@ public class InMemoryWorkflowStateStoreTests
         // Assert
         Assert.NotNull(session);
         Assert.Equal(sessionId, session.SessionId);
+    }
+
+    [Fact]
+    public async Task SetStateAsync_ThrowsArgumentNullException_WhenSessionIdIsNull()
+    {
+        // Arrange
+        var store = new InMemoryWorkflowStateStore();
+
+        // Act & Assert
+        await Assert.ThrowsAsync<ArgumentNullException>(() => store.SetStateAsync<string>(null!, "key", "value"));
+    }
+
+    [Fact]
+    public async Task SetStateAsync_ThrowsArgumentNullException_WhenKeyIsNull()
+    {
+        // Arrange
+        var store = new InMemoryWorkflowStateStore();
+
+        // Act & Assert
+        await Assert.ThrowsAsync<ArgumentNullException>(() => store.SetStateAsync<string>("session", null!, "value"));
     }
 
     [Fact]
@@ -190,6 +250,16 @@ public class InMemoryWorkflowStateStoreTests
 
         // Assert
         Assert.False(result);
+    }
+
+    [Fact]
+    public async Task DeleteSessionAsync_ThrowsArgumentNullException_WhenSessionIdIsNull()
+    {
+        // Arrange
+        var store = new InMemoryWorkflowStateStore();
+
+        // Act & Assert
+        await Assert.ThrowsAsync<ArgumentNullException>(() => store.DeleteSessionAsync(null!));
     }
 
     [Fact]
