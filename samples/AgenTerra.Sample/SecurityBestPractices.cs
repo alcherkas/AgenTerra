@@ -71,9 +71,22 @@ public class SecurityBestPractices
         string normalizedPath = Path.GetFullPath(fullPath);
         string normalizedBase = Path.GetFullPath(baseDirectory);
         
+        // Ensure normalized base ends with directory separator for proper comparison
+        if (!normalizedBase.EndsWith(Path.DirectorySeparatorChar.ToString()))
+        {
+            normalizedBase += Path.DirectorySeparatorChar;
+        }
+        
         if (!normalizedPath.StartsWith(normalizedBase, StringComparison.OrdinalIgnoreCase))
         {
             throw new UnauthorizedAccessException("Access to path outside base directory is not allowed");
+        }
+        
+        // Additional check: ensure relative path doesn't contain traversal attempts
+        string relativePath = Path.GetRelativePath(normalizedBase, normalizedPath);
+        if (relativePath.Contains("..") || Path.IsPathRooted(relativePath))
+        {
+            throw new UnauthorizedAccessException("Path traversal attempt detected");
         }
         
         return normalizedPath;
