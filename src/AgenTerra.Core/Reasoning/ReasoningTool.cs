@@ -39,13 +39,14 @@ public class ReasoningTool : IReasoningTool, IDisposable
             content.AppendLine($"Action: {input.Action}");
         }
 
-        var step = new ReasoningStep(
-            Type: "think",
-            Title: input.Title,
-            Content: content.ToString().TrimEnd(),
-            Confidence: input.Confidence,
-            Timestamp: DateTime.UtcNow
-        );
+        var step = new ReasoningStep
+        {
+            Type = "think",
+            Title = input.Title,
+            Content = content.ToString().TrimEnd(),
+            Confidence = input.Confidence,
+            Timestamp = DateTime.UtcNow
+        };
 
         await _lock.WaitAsync(cancellationToken);
         try
@@ -101,13 +102,14 @@ public class ReasoningTool : IReasoningTool, IDisposable
         content.AppendLine($"Analysis: {input.Analysis}");
         content.AppendLine($"Next Action: {input.NextAction}");
 
-        var step = new ReasoningStep(
-            Type: "analyze",
-            Title: input.Title,
-            Content: content.ToString().TrimEnd(),
-            Confidence: input.Confidence,
-            Timestamp: DateTime.UtcNow
-        );
+        var step = new ReasoningStep
+        {
+            Type = "analyze",
+            Title = input.Title,
+            Content = content.ToString().TrimEnd(),
+            Confidence = input.Confidence,
+            Timestamp = DateTime.UtcNow
+        };
 
         await _lock.WaitAsync(cancellationToken);
         try

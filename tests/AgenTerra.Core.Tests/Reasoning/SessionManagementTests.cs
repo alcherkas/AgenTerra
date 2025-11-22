@@ -39,10 +39,7 @@ public class SessionManagementTests
         for (int i = 0; i < sessionCount; i++)
         {
             var sessionId = $"session-{i}";
-            var task = tool.ThinkAsync(new ThinkInput(
-                SessionId: sessionId,
-                Title: $"Session {i}",
-                Thought: $"Thought for session {i}"
+            var task = tool.ThinkAsync(new ThinkInput(sessionId, $"Session {i}", $"Thought for session {i}"
             ));
             tasks.Add(task);
         }

@@ -62,11 +62,8 @@ public class ReasoningHistoryTests
         var sessionId = "content-test";
 
         // Act
-        await tool.ThinkAsync(new ThinkInput(
-            SessionId: sessionId,
-            Title: "Test",
-            Thought: "My thought",
-            Action: "My action"
+        await tool.ThinkAsync(new ThinkInput(sessionId, "Test", "My thought",
+            "My action"
         ));
 
         var history = tool.GetReasoningHistory(sessionId);
@@ -84,10 +81,7 @@ public class ReasoningHistoryTests
         var sessionId = "no-action-test";
 
         // Act
-        await tool.ThinkAsync(new ThinkInput(
-            SessionId: sessionId,
-            Title: "Test",
-            Thought: "My thought"
+        await tool.ThinkAsync(new ThinkInput(sessionId, "Test", "My thought"
         ));
 
         var history = tool.GetReasoningHistory(sessionId);
@@ -105,12 +99,8 @@ public class ReasoningHistoryTests
         var sessionId = "analyze-content-test";
 
         // Act
-        await tool.AnalyzeAsync(new AnalyzeInput(
-            SessionId: sessionId,
-            Title: "Test",
-            Result: "My result",
-            Analysis: "My analysis",
-            NextAction: NextAction.Validate
+        await tool.AnalyzeAsync(new AnalyzeInput(sessionId, "Test", "My result", "My analysis",
+            NextAction.Validate
         ));
 
         var history = tool.GetReasoningHistory(sessionId);
@@ -129,8 +119,8 @@ public class ReasoningHistoryTests
         var sessionId = "confidence-test";
 
         // Act
-        await tool.ThinkAsync(new ThinkInput(sessionId, "Test", "Thought", Confidence: 0.65));
-        await tool.AnalyzeAsync(new AnalyzeInput(sessionId, "Test", "R", "A", Confidence: 0.92));
+        await tool.ThinkAsync(new ThinkInput(sessionId, "Test", "Thought", null, 0.65));
+        await tool.AnalyzeAsync(new AnalyzeInput(sessionId, "Test", "R", "A", NextAction.Continue, 0.92));
 
         var history = tool.GetReasoningHistory(sessionId);
 
@@ -169,12 +159,7 @@ public class ReasoningHistoryTests
         var sessionId = "complete-test";
 
         // Act
-        await tool.ThinkAsync(new ThinkInput(
-            SessionId: sessionId,
-            Title: "Complete Step",
-            Thought: "Full thought",
-            Action: "Full action",
-            Confidence: 0.88
+        await tool.ThinkAsync(new ThinkInput(sessionId, "Complete Step", "Full thought", "Full action", 0.88
         ));
 
         var history = tool.GetReasoningHistory(sessionId);

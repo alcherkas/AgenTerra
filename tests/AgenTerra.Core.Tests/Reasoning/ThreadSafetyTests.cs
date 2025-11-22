@@ -17,10 +17,7 @@ public class ThreadSafetyTests
         for (int i = 0; i < taskCount; i++)
         {
             var index = i;
-            var task = tool.ThinkAsync(new ThinkInput(
-                SessionId: sessionId,
-                Title: $"Concurrent Think {index}",
-                Thought: $"Thought {index}"
+            var task = tool.ThinkAsync(new ThinkInput(sessionId, $"Concurrent Think {index}", $"Thought {index}"
             ));
             tasks.Add(task);
         }
@@ -47,11 +44,7 @@ public class ThreadSafetyTests
         for (int i = 0; i < taskCount; i++)
         {
             var index = i;
-            var task = tool.AnalyzeAsync(new AnalyzeInput(
-                SessionId: sessionId,
-                Title: $"Concurrent Analyze {index}",
-                Result: $"Result {index}",
-                Analysis: $"Analysis {index}"
+            var task = tool.AnalyzeAsync(new AnalyzeInput(sessionId, $"Concurrent Analyze {index}", $"Result {index}", $"Analysis {index}"
             ));
             tasks.Add(task);
         }
@@ -82,19 +75,12 @@ public class ThreadSafetyTests
             
             if (i % 2 == 0)
             {
-                task = tool.ThinkAsync(new ThinkInput(
-                    SessionId: sessionId,
-                    Title: $"Think {index}",
-                    Thought: $"Thought {index}"
+                task = tool.ThinkAsync(new ThinkInput(sessionId, $"Think {index}", $"Thought {index}"
                 ));
             }
             else
             {
-                task = tool.AnalyzeAsync(new AnalyzeInput(
-                    SessionId: sessionId,
-                    Title: $"Analyze {index}",
-                    Result: $"Result {index}",
-                    Analysis: $"Analysis {index}"
+                task = tool.AnalyzeAsync(new AnalyzeInput(sessionId, $"Analyze {index}", $"Result {index}", $"Analysis {index}"
                 ));
             }
             
@@ -126,10 +112,7 @@ public class ThreadSafetyTests
             for (int i = 0; i < stepsPerSession; i++)
             {
                 var index = i;
-                var task = tool.ThinkAsync(new ThinkInput(
-                    SessionId: sessionId,
-                    Title: $"Step {index}",
-                    Thought: $"Thought {index}"
+                var task = tool.ThinkAsync(new ThinkInput(sessionId, $"Step {index}", $"Thought {index}"
                 ));
                 tasks.Add(task);
             }
@@ -159,10 +142,7 @@ public class ThreadSafetyTests
         for (int i = 0; i < writeCount; i++)
         {
             var index = i;
-            var task = tool.ThinkAsync(new ThinkInput(
-                SessionId: sessionId,
-                Title: $"Step {index}",
-                Thought: $"Thought {index}"
+            var task = tool.ThinkAsync(new ThinkInput(sessionId, $"Step {index}", $"Thought {index}"
             ));
             tasks.Add(task);
         }
@@ -191,10 +171,7 @@ public class ThreadSafetyTests
 
         // Act
         var tasks = Enumerable.Range(0, sessionCount)
-            .Select(i => tool.ThinkAsync(new ThinkInput(
-                SessionId: $"session-{i}",
-                Title: "Initial Step",
-                Thought: "Initial thought"
+            .Select(i => tool.ThinkAsync(new ThinkInput($"session-{i}", "Initial Step", "Initial thought"
             )))
             .ToList();
 
@@ -233,19 +210,12 @@ public class ThreadSafetyTests
                 
                 if (operation == 0)
                 {
-                    task = tool.ThinkAsync(new ThinkInput(
-                        SessionId: sessionId,
-                        Title: $"Think {index}",
-                        Thought: $"Thought {index}"
+                    task = tool.ThinkAsync(new ThinkInput(sessionId, $"Think {index}", $"Thought {index}"
                     ));
                 }
                 else if (operation == 1)
                 {
-                    task = tool.AnalyzeAsync(new AnalyzeInput(
-                        SessionId: sessionId,
-                        Title: $"Analyze {index}",
-                        Result: $"Result {index}",
-                        Analysis: $"Analysis {index}"
+                    task = tool.AnalyzeAsync(new AnalyzeInput(sessionId, $"Analyze {index}", $"Result {index}", $"Analysis {index}"
                     ));
                 }
                 else

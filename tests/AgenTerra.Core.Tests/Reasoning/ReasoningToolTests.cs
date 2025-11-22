@@ -9,12 +9,7 @@ public class ReasoningToolTests
     {
         // Arrange
         var tool = new ReasoningTool();
-        var input = new ThinkInput(
-            SessionId: "test-session",
-            Title: "Test Thought",
-            Thought: "This is a test thought",
-            Action: "Test action",
-            Confidence: 0.9
+        var input = new ThinkInput("test-session", "Test Thought", "This is a test thought", "Test action", 0.9
         );
 
         // Act
@@ -43,10 +38,7 @@ public class ReasoningToolTests
     {
         // Arrange
         var tool = new ReasoningTool();
-        var input = new ThinkInput(
-            SessionId: null!,
-            Title: "Test",
-            Thought: "Test"
+        var input = new ThinkInput(null!, "Test", "Test"
         );
 
         // Act & Assert
@@ -58,10 +50,7 @@ public class ReasoningToolTests
     {
         // Arrange
         var tool = new ReasoningTool();
-        var input = new ThinkInput(
-            SessionId: "test-session",
-            Title: "",
-            Thought: "Test"
+        var input = new ThinkInput("test-session", "", "Test"
         );
 
         // Act & Assert
@@ -73,10 +62,7 @@ public class ReasoningToolTests
     {
         // Arrange
         var tool = new ReasoningTool();
-        var input = new ThinkInput(
-            SessionId: "test-session",
-            Title: "Test",
-            Thought: ""
+        var input = new ThinkInput("test-session", "Test", ""
         );
 
         // Act & Assert
@@ -88,10 +74,7 @@ public class ReasoningToolTests
     {
         // Arrange
         var tool = new ReasoningTool();
-        var input = new ThinkInput(
-            SessionId: "test-session",
-            Title: "Test Thought",
-            Thought: "This is a test thought"
+        var input = new ThinkInput("test-session", "Test Thought", "This is a test thought"
         );
 
         // Act
@@ -108,13 +91,7 @@ public class ReasoningToolTests
     {
         // Arrange
         var tool = new ReasoningTool();
-        var input = new AnalyzeInput(
-            SessionId: "test-session",
-            Title: "Test Analysis",
-            Result: "Test result",
-            Analysis: "Test analysis",
-            NextAction: NextAction.Validate,
-            Confidence: 0.85
+        var input = new AnalyzeInput("test-session", "Test Analysis", "Test result", "Test analysis", NextAction.Validate, 0.85
         );
 
         // Act
@@ -144,11 +121,7 @@ public class ReasoningToolTests
     {
         // Arrange
         var tool = new ReasoningTool();
-        var input = new AnalyzeInput(
-            SessionId: null!,
-            Title: "Test",
-            Result: "Test",
-            Analysis: "Test"
+        var input = new AnalyzeInput(null!, "Test", "Test", "Test"
         );
 
         // Act & Assert
@@ -160,11 +133,7 @@ public class ReasoningToolTests
     {
         // Arrange
         var tool = new ReasoningTool();
-        var input = new AnalyzeInput(
-            SessionId: "test-session",
-            Title: "Test",
-            Result: "",
-            Analysis: "Test"
+        var input = new AnalyzeInput("test-session", "Test", "", "Test"
         );
 
         // Act & Assert
@@ -176,11 +145,7 @@ public class ReasoningToolTests
     {
         // Arrange
         var tool = new ReasoningTool();
-        var input = new AnalyzeInput(
-            SessionId: "test-session",
-            Title: "Test Analysis",
-            Result: "Test result",
-            Analysis: "Test analysis"
+        var input = new AnalyzeInput("test-session", "Test Analysis", "Test result", "Test analysis"
         );
 
         // Act
@@ -290,8 +255,8 @@ public class ReasoningToolTests
         var sessionId = "test-session";
 
         // Act
-        await tool.ThinkAsync(new ThinkInput(sessionId, "Test", "Test", Confidence: 0.75));
-        await tool.AnalyzeAsync(new AnalyzeInput(sessionId, "Test", "R", "A", Confidence: 0.95));
+        await tool.ThinkAsync(new ThinkInput(sessionId, "Test", "Test", null, 0.75));
+        await tool.AnalyzeAsync(new AnalyzeInput(sessionId, "Test", "R", "A", NextAction.Continue, 0.95));
 
         var history = tool.GetReasoningHistory(sessionId);
 
@@ -305,10 +270,7 @@ public class ReasoningToolTests
     {
         // Arrange
         var tool = new ReasoningTool();
-        var input = new ThinkInput(
-            SessionId: "test-session",
-            Title: "Test Thought",
-            Thought: "This is a test thought"
+        var input = new ThinkInput("test-session", "Test Thought", "This is a test thought"
         );
         using var cts = new CancellationTokenSource();
         cts.Cancel();
@@ -323,11 +285,7 @@ public class ReasoningToolTests
     {
         // Arrange
         var tool = new ReasoningTool();
-        var input = new AnalyzeInput(
-            SessionId: "test-session",
-            Title: "Test Analysis",
-            Result: "Test result",
-            Analysis: "Test analysis"
+        var input = new AnalyzeInput("test-session", "Test Analysis", "Test result", "Test analysis"
         );
         using var cts = new CancellationTokenSource();
         cts.Cancel();
