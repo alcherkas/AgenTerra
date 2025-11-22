@@ -1,5 +1,4 @@
 using AgenTerra.Core.Knowledge;
-using AgenTerra.Core.Knowledge.Readers;
 using AgenTerra.Core.Reasoning;
 using AgenTerra.Core.State;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,10 +23,9 @@ public static class ServiceCollectionExtensions
         // State - Singleton for shared state storage
         services.AddSingleton<IWorkflowStateStore, InMemoryWorkflowStateStore>();
         
-        // Knowledge - Transient (stateless readers)
-        services.AddTransient<DocumentReaderFactory>();
-        services.AddTransient<IDocumentReader, TextDocumentReader>();
-        services.AddTransient<IDocumentReader, PdfDocumentReader>();
+        // Knowledge - Singleton for shared factory with registered readers
+        // The factory creates and manages its own document reader instances
+        services.AddSingleton<DocumentReaderFactory>();
         
         return services;
     }

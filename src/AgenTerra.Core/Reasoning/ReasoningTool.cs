@@ -143,7 +143,9 @@ public class ReasoningTool : IReasoningTool, IDisposable
             throw new ArgumentException("SessionId cannot be null or whitespace.", nameof(sessionId));
         }
 
-        _lock.Wait();
+        // Using Wait() explicitly as this is a synchronous method.
+        // The method is synchronous to maintain backward compatibility and avoid forcing async all the way up the call chain.
+        _lock.Wait(CancellationToken.None);
         try
         {
             if (_sessions.TryGetValue(sessionId, out var steps))
