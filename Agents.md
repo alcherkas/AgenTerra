@@ -9,6 +9,15 @@ This document provides an overview of all available agents in the AgenTerra proj
   - **Samples** to demonstrate usage and provide examples.
 - Create a **feature branch** for each new feature before starting implementation.
 
+## Sample Code Organization
+- Sample code should be organized into separate classes in the `samples/AgenTerra.Sample` directory.
+- Each feature should have its own sample class (e.g., `ReasoningToolSample.cs`, `WorkflowSessionStateSample.cs`, `KnowledgeReadersSample.cs`).
+- Sample classes should:
+  - Be in the `AgenTerra.Sample` namespace
+  - Include XML documentation describing the sample's purpose
+  - Have a public static `RunAsync()` method that can be called from `Program.cs`
+- The `Program.cs` file should provide a menu to select which sample to run, making it easy to demonstrate different features independently.
+
 
 ## Available Agents
 
