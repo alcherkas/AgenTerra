@@ -62,6 +62,11 @@ public class InMemoryWorkflowStateStore : IWorkflowStateStore
     }
 
     /// <inheritdoc/>
+    /// <remarks>
+    /// This method allows storing null values intentionally when T is a nullable type.
+    /// The null-forgiving operator is used because the Dictionary requires non-nullable object values,
+    /// but the actual value can be null when T is nullable.
+    /// </remarks>
     public async Task SetStateAsync<T>(string sessionId, string key, T value)
     {
         ArgumentNullException.ThrowIfNull(sessionId);

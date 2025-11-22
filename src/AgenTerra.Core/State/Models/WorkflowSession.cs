@@ -45,6 +45,5 @@ public record WorkflowSession
         SessionState = new Dictionary<string, object>();
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
-        SessionId = string.Empty; // Will be set via init
     }
 }

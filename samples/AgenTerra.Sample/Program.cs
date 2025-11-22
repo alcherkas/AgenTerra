@@ -15,8 +15,8 @@ Console.WriteLine($"Session created at: {session?.CreatedAt}");
 // Simulate second workflow run - Add more items
 Console.WriteLine("\n=== Run 2: Adding more items ===");
 var existingList = await stateStore.GetStateAsync<List<string>>(sessionId, "shopping_list");
-existingList?.Add("eggs");
-await stateStore.SetStateAsync(sessionId, "shopping_list", existingList);
+var updatedList = new List<string>(existingList ?? new List<string>()) { "eggs" };
+await stateStore.SetStateAsync(sessionId, "shopping_list", updatedList);
 await stateStore.SetStateAsync(sessionId, "total_items", 3);
 
 // Simulate third workflow run - Check cart
