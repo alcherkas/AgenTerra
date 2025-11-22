@@ -16,23 +16,35 @@ public class ReasoningToolSample
         Console.WriteLine("=== Fox, Chicken, and Grain River Crossing Puzzle ===");
         Console.WriteLine();
 
-        var reasoningTool = new ReasoningTool();
+        using var reasoningTool = new ReasoningTool();
         var sessionId = Guid.NewGuid().ToString();
 
         // Step 1: Think - Initial State Analysis
-        var response1 = await reasoningTool.ThinkAsync(new ThinkInput(sessionId, "Initial State Analysis", "Man, fox, chicken, grain on left bank. Goal: all on right bank. Boat holds man + one item.",
+        var response1 = await reasoningTool.ThinkAsync(new ThinkInput(
+            SessionId: sessionId,
+            Title: "Initial State Analysis",
+            Thought: "Man, fox, chicken, grain on left bank. Goal: all on right bank. Boat holds man + one item.",
             Action: "Identify constraints",
             Confidence: 0.9
         ));
         Console.WriteLine(response1);
 
         // Step 2: Analyze - Constraint Analysis
-        var response2 = await reasoningTool.AnalyzeAsync(new AnalyzeInput(sessionId, "Constraint Analysis", "Fox eats chicken if alone. Chicken eats grain if alone.", "Must never leave fox+chicken or chicken+grain together without the man present.", NextAction.Continue, 0.95
+        var response2 = await reasoningTool.AnalyzeAsync(new AnalyzeInput(
+            SessionId: sessionId,
+            Title: "Constraint Analysis",
+            Result: "Fox eats chicken if alone. Chicken eats grain if alone.",
+            Analysis: "Must never leave fox+chicken or chicken+grain together without the man present.",
+            NextAction: NextAction.Continue,
+            Confidence: 0.95
         ));
         Console.WriteLine(response2);
 
         // Step 3: Think - First Move Strategy
-        var response3 = await reasoningTool.ThinkAsync(new ThinkInput(sessionId, "First Move Strategy", "Chicken is the conflict point. If we take fox first, chicken eats grain. If we take grain first, fox eats chicken.",
+        var response3 = await reasoningTool.ThinkAsync(new ThinkInput(
+            SessionId: sessionId,
+            Title: "First Move Strategy",
+            Thought: "Chicken is the conflict point. If we take fox first, chicken eats grain. If we take grain first, fox eats chicken.",
             Action: "Take chicken across first",
             Confidence: 0.85
         ));
@@ -50,7 +62,10 @@ public class ReasoningToolSample
         Console.WriteLine(response4);
 
         // Step 5: Think - Second Move
-        var response5 = await reasoningTool.ThinkAsync(new ThinkInput(sessionId, "Second Move", "Take fox across. But if we leave fox with chicken, fox eats chicken.",
+        var response5 = await reasoningTool.ThinkAsync(new ThinkInput(
+            SessionId: sessionId,
+            Title: "Second Move",
+            Thought: "Take fox across. But if we leave fox with chicken, fox eats chicken.",
             Action: "Take fox across, bring chicken back",
             Confidence: 0.8
         ));
@@ -68,7 +83,10 @@ public class ReasoningToolSample
         Console.WriteLine(response6);
 
         // Step 7: Think - Third Move
-        var response7 = await reasoningTool.ThinkAsync(new ThinkInput(sessionId, "Third Move", "Take grain across, leave fox and grain together (safe).",
+        var response7 = await reasoningTool.ThinkAsync(new ThinkInput(
+            SessionId: sessionId,
+            Title: "Third Move",
+            Thought: "Take grain across, leave fox and grain together (safe).",
             Action: "Take grain across",
             Confidence: 0.9
         ));
@@ -86,7 +104,10 @@ public class ReasoningToolSample
         Console.WriteLine(response8);
 
         // Step 9: Think - Final Move
-        var response9 = await reasoningTool.ThinkAsync(new ThinkInput(sessionId, "Final Move", "Go back empty, get chicken.",
+        var response9 = await reasoningTool.ThinkAsync(new ThinkInput(
+            SessionId: sessionId,
+            Title: "Final Move",
+            Thought: "Go back empty, get chicken.",
             Action: "Take chicken across",
             Confidence: 1.0
         ));

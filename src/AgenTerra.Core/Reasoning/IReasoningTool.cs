@@ -26,6 +26,11 @@ public interface IReasoningTool
     /// </summary>
     /// <param name="sessionId">The unique identifier of the session.</param>
     /// <returns>An immutable list of reasoning steps for the session.</returns>
+    /// <remarks>
+    /// Warning: This method blocks synchronously to acquire a lock. 
+    /// In ASP.NET or UI contexts with a synchronization context, this may cause deadlocks.
+    /// This method is synchronous to maintain backward compatibility.
+    /// </remarks>
     IReadOnlyList<ReasoningStep> GetReasoningHistory(string sessionId);
 }
 

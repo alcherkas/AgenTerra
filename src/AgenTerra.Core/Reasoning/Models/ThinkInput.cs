@@ -33,13 +33,6 @@ public record ThinkInput
     public double Confidence { get; init; } = 0.8;
 
     /// <summary>
-    /// Initializes a new instance of the ThinkInput record (for backward compatibility).
-    /// </summary>
-    public ThinkInput()
-    {
-    }
-
-    /// <summary>
     /// Initializes a new instance of the ThinkInput record with positional parameters (for backward compatibility).
     /// </summary>
     [SetsRequiredMembers]
