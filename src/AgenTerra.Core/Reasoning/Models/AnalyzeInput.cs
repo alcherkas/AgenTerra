@@ -38,13 +38,6 @@ public record AnalyzeInput
     public double Confidence { get; init; } = 0.8;
 
     /// <summary>
-    /// Initializes a new instance of the AnalyzeInput record (for backward compatibility).
-    /// </summary>
-    public AnalyzeInput()
-    {
-    }
-
-    /// <summary>
     /// Initializes a new instance of the AnalyzeInput record with positional parameters (for backward compatibility).
     /// </summary>
     [SetsRequiredMembers]
