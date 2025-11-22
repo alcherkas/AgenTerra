@@ -145,5 +145,6 @@ public class InMemoryWorkflowStateStore : IWorkflowStateStore, IDisposable
             _disposed = true;
         }
         GC.SuppressFinalize(this);
+        GC.SuppressFinalize(this);
     }
 }
