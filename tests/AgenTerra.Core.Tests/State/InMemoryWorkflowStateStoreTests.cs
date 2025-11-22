@@ -354,4 +354,87 @@ public class InMemoryWorkflowStateStoreTests
         Assert.NotSame(session1, session2);
         Assert.Equal(session1!.SessionId, session2!.SessionId);
     }
+
+    [Fact]
+    public async Task GetSessionAsync_WithCancellationToken_SupportsCancellation()
+    {
+        // Arrange
+        var store = new InMemoryWorkflowStateStore();
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        // Act & Assert
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(
+            async () => await store.GetSessionAsync("test-session", cts.Token));
+    }
+
+    [Fact]
+    public async Task SaveSessionAsync_WithCancellationToken_SupportsCancellation()
+    {
+        // Arrange
+        var store = new InMemoryWorkflowStateStore();
+        var session = new WorkflowSession
+        {
+            SessionId = "test-session",
+            SessionState = new Dictionary<string, object>()
+        };
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        // Act & Assert
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(
+            async () => await store.SaveSessionAsync(session, cts.Token));
+    }
+
+    [Fact]
+    public async Task GetStateAsync_WithCancellationToken_SupportsCancellation()
+    {
+        // Arrange
+        var store = new InMemoryWorkflowStateStore();
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        // Act & Assert
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(
+            async () => await store.GetStateAsync<string>("test-session", "key", cts.Token));
+    }
+
+    [Fact]
+    public async Task SetStateAsync_WithCancellationToken_SupportsCancellation()
+    {
+        // Arrange
+        var store = new InMemoryWorkflowStateStore();
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        // Act & Assert
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(
+            async () => await store.SetStateAsync("test-session", "key", "value", cts.Token));
+    }
+
+    [Fact]
+    public async Task DeleteSessionAsync_WithCancellationToken_SupportsCancellation()
+    {
+        // Arrange
+        var store = new InMemoryWorkflowStateStore();
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        // Act & Assert
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(
+            async () => await store.DeleteSessionAsync("test-session", cts.Token));
+    }
+
+    [Fact]
+    public async Task GetAllSessionIdsAsync_WithCancellationToken_SupportsCancellation()
+    {
+        // Arrange
+        var store = new InMemoryWorkflowStateStore();
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        // Act & Assert
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(
+            async () => await store.GetAllSessionIdsAsync(cts.Token));
+    }
 }

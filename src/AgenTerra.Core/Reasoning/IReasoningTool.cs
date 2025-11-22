@@ -9,15 +9,17 @@ public interface IReasoningTool
     /// Records a thinking step with a thought and optional action.
     /// </summary>
     /// <param name="input">The thinking input containing the session ID, title, thought, and optional action.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A formatted string response suitable for LLM consumption.</returns>
-    Task<string> ThinkAsync(ThinkInput input);
+    Task<string> ThinkAsync(ThinkInput input, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Records an analysis step with a result and analysis of the next action.
     /// </summary>
     /// <param name="input">The analysis input containing the session ID, title, result, analysis, and next action.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A formatted string response suitable for LLM consumption.</returns>
-    Task<string> AnalyzeAsync(AnalyzeInput input);
+    Task<string> AnalyzeAsync(AnalyzeInput input, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the complete reasoning history for a specific session.

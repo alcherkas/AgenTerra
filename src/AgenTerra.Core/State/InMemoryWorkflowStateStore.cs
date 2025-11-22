@@ -7,17 +7,18 @@ namespace AgenTerra.Core.State;
 /// Stores workflow sessions in memory using a thread-safe dictionary.
 /// Suitable for single-instance deployments and testing scenarios.
 /// </summary>
-public class InMemoryWorkflowStateStore : IWorkflowStateStore
+public class InMemoryWorkflowStateStore : IWorkflowStateStore, IDisposable
 {
     private readonly Dictionary<string, WorkflowSession> _sessions = new();
     private readonly SemaphoreSlim _lock = new(1, 1);
+    private bool _disposed;
 
     /// <inheritdoc/>
-    public async Task<WorkflowSession?> GetSessionAsync(string sessionId)
+    public async Task<WorkflowSession?> GetSessionAsync(string sessionId, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(sessionId);
 
-        await _lock.WaitAsync();
+        await _lock.WaitAsync(cancellationToken);
         try
         {
             return _sessions.TryGetValue(sessionId, out var session)
@@ -31,11 +32,11 @@ public class InMemoryWorkflowStateStore : IWorkflowStateStore
     }
 
     /// <inheritdoc/>
-    public async Task SaveSessionAsync(WorkflowSession session)
+    public async Task SaveSessionAsync(WorkflowSession session, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(session);
 
-        await _lock.WaitAsync();
+        await _lock.WaitAsync(cancellationToken);
         try
         {
             var updatedSession = session with { UpdatedAt = DateTime.UtcNow };
@@ -48,12 +49,12 @@ public class InMemoryWorkflowStateStore : IWorkflowStateStore
     }
 
     /// <inheritdoc/>
-    public async Task<T?> GetStateAsync<T>(string sessionId, string key)
+    public async Task<T?> GetStateAsync<T>(string sessionId, string key, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(sessionId);
         ArgumentNullException.ThrowIfNull(key);
 
-        var session = await GetSessionAsync(sessionId);
+        var session = await GetSessionAsync(sessionId, cancellationToken);
         if (session?.SessionState.TryGetValue(key, out var value) == true)
         {
             return (T?)value;
@@ -67,12 +68,12 @@ public class InMemoryWorkflowStateStore : IWorkflowStateStore
     /// The null-forgiving operator is used because the Dictionary requires non-nullable object values,
     /// but the actual value can be null when T is nullable.
     /// </remarks>
-    public async Task SetStateAsync<T>(string sessionId, string key, T value)
+    public async Task SetStateAsync<T>(string sessionId, string key, T value, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(sessionId);
         ArgumentNullException.ThrowIfNull(key);
 
-        await _lock.WaitAsync();
+        await _lock.WaitAsync(cancellationToken);
         try
         {
             if (!_sessions.TryGetValue(sessionId, out var session))
@@ -104,11 +105,11 @@ public class InMemoryWorkflowStateStore : IWorkflowStateStore
     }
 
     /// <inheritdoc/>
-    public async Task<bool> DeleteSessionAsync(string sessionId)
+    public async Task<bool> DeleteSessionAsync(string sessionId, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(sessionId);
 
-        await _lock.WaitAsync();
+        await _lock.WaitAsync(cancellationToken);
         try
         {
             return _sessions.Remove(sessionId);
@@ -120,9 +121,9 @@ public class InMemoryWorkflowStateStore : IWorkflowStateStore
     }
 
     /// <inheritdoc/>
-    public async Task<IReadOnlyList<string>> GetAllSessionIdsAsync()
+    public async Task<IReadOnlyList<string>> GetAllSessionIdsAsync(CancellationToken cancellationToken = default)
     {
-        await _lock.WaitAsync();
+        await _lock.WaitAsync(cancellationToken);
         try
         {
             return _sessions.Keys.ToList();
@@ -130,6 +131,18 @@ public class InMemoryWorkflowStateStore : IWorkflowStateStore
         finally
         {
             _lock.Release();
+        }
+    }
+
+    /// <summary>
+    /// Disposes the resources used by the InMemoryWorkflowStateStore.
+    /// </summary>
+    public void Dispose()
+    {
+        if (!_disposed)
+        {
+            _lock.Dispose();
+            _disposed = true;
         }
     }
 }

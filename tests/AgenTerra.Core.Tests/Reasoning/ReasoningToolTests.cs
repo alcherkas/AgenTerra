@@ -299,4 +299,41 @@ public class ReasoningToolTests
         Assert.Equal(0.75, history[0].Confidence);
         Assert.Equal(0.95, history[1].Confidence);
     }
+
+    [Fact]
+    public async Task ThinkAsync_WithCancellationToken_SupportsCancellation()
+    {
+        // Arrange
+        var tool = new ReasoningTool();
+        var input = new ThinkInput(
+            SessionId: "test-session",
+            Title: "Test Thought",
+            Thought: "This is a test thought"
+        );
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        // Act & Assert
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(
+            async () => await tool.ThinkAsync(input, cts.Token));
+    }
+
+    [Fact]
+    public async Task AnalyzeAsync_WithCancellationToken_SupportsCancellation()
+    {
+        // Arrange
+        var tool = new ReasoningTool();
+        var input = new AnalyzeInput(
+            SessionId: "test-session",
+            Title: "Test Analysis",
+            Result: "Test result",
+            Analysis: "Test analysis"
+        );
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        // Act & Assert
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(
+            async () => await tool.AnalyzeAsync(input, cts.Token));
+    }
 }

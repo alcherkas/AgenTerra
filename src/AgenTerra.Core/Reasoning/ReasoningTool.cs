@@ -6,13 +6,14 @@ namespace AgenTerra.Core.Reasoning;
 /// Provides step-by-step reasoning capabilities with in-memory session storage.
 /// This implementation is thread-safe and supports multiple concurrent sessions.
 /// </summary>
-public class ReasoningTool : IReasoningTool
+public class ReasoningTool : IReasoningTool, IDisposable
 {
     private readonly Dictionary<string, List<ReasoningStep>> _sessions = new();
-    private readonly object _lock = new();
+    private readonly SemaphoreSlim _lock = new(1, 1);
+    private bool _disposed;
 
     /// <inheritdoc />
-    public Task<string> ThinkAsync(ThinkInput input)
+    public async Task<string> ThinkAsync(ThinkInput input, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(input);
         
@@ -46,7 +47,8 @@ public class ReasoningTool : IReasoningTool
             Timestamp: DateTime.UtcNow
         );
 
-        lock (_lock)
+        await _lock.WaitAsync(cancellationToken);
+        try
         {
             if (!_sessions.TryGetValue(input.SessionId, out var steps))
             {
@@ -55,6 +57,10 @@ public class ReasoningTool : IReasoningTool
             }
             steps.Add(step);
         }
+        finally
+        {
+            _lock.Release();
+        }
 
         var response = new StringBuilder();
         response.AppendLine($"[THINK] {input.Title}");
@@ -62,11 +68,11 @@ public class ReasoningTool : IReasoningTool
         response.AppendLine(content.ToString());
         response.AppendLine($"Recorded at: {step.Timestamp:O}");
 
-        return Task.FromResult(response.ToString());
+        return response.ToString();
     }
 
     /// <inheritdoc />
-    public Task<string> AnalyzeAsync(AnalyzeInput input)
+    public async Task<string> AnalyzeAsync(AnalyzeInput input, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(input);
         
@@ -103,7 +109,8 @@ public class ReasoningTool : IReasoningTool
             Timestamp: DateTime.UtcNow
         );
 
-        lock (_lock)
+        await _lock.WaitAsync(cancellationToken);
+        try
         {
             if (!_sessions.TryGetValue(input.SessionId, out var steps))
             {
@@ -112,6 +119,10 @@ public class ReasoningTool : IReasoningTool
             }
             steps.Add(step);
         }
+        finally
+        {
+            _lock.Release();
+        }
 
         var response = new StringBuilder();
         response.AppendLine($"[ANALYZE] {input.Title}");
@@ -119,7 +130,7 @@ public class ReasoningTool : IReasoningTool
         response.AppendLine(content.ToString());
         response.AppendLine($"Recorded at: {step.Timestamp:O}");
 
-        return Task.FromResult(response.ToString());
+        return response.ToString();
     }
 
     /// <inheritdoc />
@@ -130,13 +141,30 @@ public class ReasoningTool : IReasoningTool
             throw new ArgumentException("SessionId cannot be null or whitespace.", nameof(sessionId));
         }
 
-        lock (_lock)
+        _lock.Wait();
+        try
         {
             if (_sessions.TryGetValue(sessionId, out var steps))
             {
                 return steps.AsReadOnly();
             }
             return Array.Empty<ReasoningStep>();
+        }
+        finally
+        {
+            _lock.Release();
+        }
+    }
+
+    /// <summary>
+    /// Disposes the resources used by the ReasoningTool.
+    /// </summary>
+    public void Dispose()
+    {
+        if (!_disposed)
+        {
+            _lock.Dispose();
+            _disposed = true;
         }
     }
 }
