@@ -8,7 +8,9 @@ This document provides an overview of all available agents in the AgenTerra proj
 **Location:** `agents/CSharpExpert.agent.md`
 
 A specialized agent for C# development tasks, including:
-- Code implementation and refactoring
-- Best practices and design patterns
-- Debugging and troubleshooting
-- .NET framework expertise
+ 
+ **Commit Message Guideline:**
+ - When committing changes, always write a reasonable commit message.
+ - The message should include a short summary of the changes made.
+ 
+ This helps maintain clarity and traceability in the project history.
