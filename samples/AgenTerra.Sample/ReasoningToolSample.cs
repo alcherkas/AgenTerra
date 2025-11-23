@@ -30,14 +30,7 @@ public class ReasoningToolSample
         Console.WriteLine(response1);
 
         // Step 2: Analyze - Constraint Analysis
-        var response2 = await reasoningTool.AnalyzeAsync(new AnalyzeInput(
-            SessionId: sessionId,
-            Title: "Constraint Analysis",
-            Result: "Fox eats chicken if alone. Chicken eats grain if alone.",
-            Analysis: "Must never leave fox+chicken or chicken+grain together without the man present.",
-            NextAction: NextAction.Continue,
-            Confidence: 0.95
-        ));
+        var response2 = await reasoningTool.AnalyzeAsync(new AnalyzeInput(sessionId, "Constraint Analysis", "Fox eats chicken if alone. Chicken eats grain if alone.", "Must never leave fox+chicken or chicken+grain together without the man present.", NextAction.Continue, 0.95));
         Console.WriteLine(response2);
 
         // Step 3: Think - First Move Strategy
