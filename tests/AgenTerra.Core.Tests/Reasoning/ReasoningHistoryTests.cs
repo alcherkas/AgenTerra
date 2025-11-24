@@ -8,7 +8,7 @@ public class ReasoningHistoryTests
     public async Task GetReasoningHistory_ReturnsReadOnlyList()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId = "readonly-test";
 
         await tool.ThinkAsync(new ThinkInput(sessionId, "Test", "Thought"));
@@ -24,7 +24,7 @@ public class ReasoningHistoryTests
     public async Task ReasoningStep_ContainsCorrectType()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId = "type-test";
 
         // Act
@@ -42,7 +42,7 @@ public class ReasoningHistoryTests
     public async Task ReasoningStep_ContainsCorrectTitle()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId = "title-test";
 
         // Act
@@ -58,15 +58,12 @@ public class ReasoningHistoryTests
     public async Task ThinkStep_ContentIncludesThoughtAndAction()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId = "content-test";
 
         // Act
-        await tool.ThinkAsync(new ThinkInput(
-            SessionId: sessionId,
-            Title: "Test",
-            Thought: "My thought",
-            Action: "My action"
+        await tool.ThinkAsync(new ThinkInput(sessionId, "Test", "My thought",
+            "My action"
         ));
 
         var history = tool.GetReasoningHistory(sessionId);
@@ -80,14 +77,11 @@ public class ReasoningHistoryTests
     public async Task ThinkStep_ContentWithoutAction_OnlyIncludesThought()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId = "no-action-test";
 
         // Act
-        await tool.ThinkAsync(new ThinkInput(
-            SessionId: sessionId,
-            Title: "Test",
-            Thought: "My thought"
+        await tool.ThinkAsync(new ThinkInput(sessionId, "Test", "My thought"
         ));
 
         var history = tool.GetReasoningHistory(sessionId);
@@ -101,16 +95,12 @@ public class ReasoningHistoryTests
     public async Task AnalyzeStep_ContentIncludesResultAnalysisAndNextAction()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId = "analyze-content-test";
 
         // Act
-        await tool.AnalyzeAsync(new AnalyzeInput(
-            SessionId: sessionId,
-            Title: "Test",
-            Result: "My result",
-            Analysis: "My analysis",
-            NextAction: NextAction.Validate
+        await tool.AnalyzeAsync(new AnalyzeInput(sessionId, "Test", "My result", "My analysis",
+            NextAction.Validate
         ));
 
         var history = tool.GetReasoningHistory(sessionId);
@@ -125,12 +115,12 @@ public class ReasoningHistoryTests
     public async Task ReasoningStep_ConfidenceIsStoredCorrectly()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId = "confidence-test";
 
         // Act
-        await tool.ThinkAsync(new ThinkInput(sessionId, "Test", "Thought", Confidence: 0.65));
-        await tool.AnalyzeAsync(new AnalyzeInput(sessionId, "Test", "R", "A", Confidence: 0.92));
+        await tool.ThinkAsync(new ThinkInput(sessionId, "Test", "Thought", null, 0.65));
+        await tool.AnalyzeAsync(new AnalyzeInput(sessionId, "Test", "R", "A", NextAction.Continue, 0.92));
 
         var history = tool.GetReasoningHistory(sessionId);
 
@@ -143,7 +133,7 @@ public class ReasoningHistoryTests
     public async Task ReasoningStep_TimestampsAreChronological()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId = "timestamp-test";
 
         // Act
@@ -165,16 +155,11 @@ public class ReasoningHistoryTests
     public async Task ReasoningStep_AllFieldsArePopulated()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId = "complete-test";
 
         // Act
-        await tool.ThinkAsync(new ThinkInput(
-            SessionId: sessionId,
-            Title: "Complete Step",
-            Thought: "Full thought",
-            Action: "Full action",
-            Confidence: 0.88
+        await tool.ThinkAsync(new ThinkInput(sessionId, "Complete Step", "Full thought", "Full action", 0.88
         ));
 
         var history = tool.GetReasoningHistory(sessionId);
@@ -195,7 +180,7 @@ public class ReasoningHistoryTests
     public async Task GetReasoningHistory_AfterMultipleCalls_ReturnsConsistentData()
     {
         // Arrange
-        var tool = new ReasoningTool();
+        using var tool = new ReasoningTool();
         var sessionId = "consistency-test";
 
         await tool.ThinkAsync(new ThinkInput(sessionId, "Test", "Thought"));
